@@ -1,0 +1,88 @@
+<div class="head" [ngClass]="getHeadClass()">
+  <div class="head-content">
+    <div class="head-content-left" style="width: 500px;">
+      <div class="search-container">
+        <div *ngIf="!canShowSearchAsOverlay" class="normal-search">
+          <input type="search" name="" id="" class="search" style="color: #181832;" disabled>
+          <i class="fas fa-search search-icon">
+          </i>
+        </div>
+        <div *ngIf="canShowSearchAsOverlay">
+          <button class="search-menu-btn ripple" disabled>
+            <i class="fas fa-search search-icon">
+            </i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="head-content-right">
+      <div class="head-menu">
+        <div class="head-menu-item">
+          <button class="head-menu-item-btn ripple">
+            <img [src]="'assets/sidebar/flags/' + selectedLanguage + '.jpg' " alt="flag" class="flag">
+          </button>
+        </div>
+        <div class="head-menu-item">
+          <button class="head-menu-item-btn ripple" disabled>
+            <i class="far fa-bell menu-icon">
+            </i>
+          </button>
+        </div>
+        <div class="head-menu-item">
+          <button class="head-menu-item-btn ripple" disabled>
+            <i class="far fa-comment-alt menu-icon">
+            </i>
+          </button>
+        </div>
+      </div>
+      <div class="head-user-avatar-container">
+        <div class="head-user-avatar">
+          <img src="https://th.bing.com/th/id/R.3c1dd0093935902659e99bef56aa4ce6?rik=TkZVVEIDxl7BHg&riu=http%3a%2f%2fwww.hrzone.com%2fsites%2fall%2fthemes%2fpp%2fimg%2fdefault-user.png&ehk=0ucrW6JgY6Y8fhtviTtcBYQ9YIjqHM3Pg0E65sHK7VU%3d&risl=&pid=ImgRaw&r=0" alt="user" class="user-avatar">
+          <div class="circle-indicator pulse">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template  #languageOverlay>
+  <div class="overlay overlay-language overlay-fall" cdkMenu>
+    <ul cdkMenuItem>
+      <li (click)="selectLanguageEN()">
+        <img src="assets/sidebar/flags/en.jpg" alt="flag">
+        <span>{{ 'English' | translate}}</span>
+      </li>
+      <li (click)="selectLanguageVI()">
+        <img src="assets/sidebar/flags/vn.jpg" alt="flag">
+        <span>{{ 'Vietnamese' | translate}}</span>
+      </li>
+    </ul>
+  </div>
+</ng-template>
+
+<ng-template #notificationOverlay>
+  <div class="overlay overlay-notification overlay-fall" cdkMenu>
+    <ul>
+      <li class="notification-head-container">
+        <div class="notification-head">Notification</div>
+        <span class="view-all-link">
+          <a>View All</a>
+        </span>
+      </li>
+      <li class="notification-message-container" *ngFor="let notification of notifications" cdkMenuItem>
+        <i [class]="notification.icon"></i>
+        <div>
+          <div class="notification-subject">
+            {{notification.subject}}
+          </div>
+          <p class="notification-desc">
+            {{notification.description}}
+          </p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</ng-template>
+

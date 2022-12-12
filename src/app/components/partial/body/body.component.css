@@ -1,0 +1,23 @@
+.body
+{
+  width: calc(100% - 4rem);
+  margin-left: 4rem;
+  position: relative;
+  margin-top: 3rem;
+  transition:  all .5s ease;
+  background:transparent;
+  top: 0;
+  z-index: 0;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.body-trimmed{
+  width: calc(100% - 16.5625rem);
+  margin-left: 16.5625rem;
+}
+
+.body-md-screen{
+  width: calc(100% - 4rem);
+  margin-left: 4rem;
+}

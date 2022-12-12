@@ -1,0 +1,342 @@
+<div class="body" id="style-13">
+  <div class="box">
+    <div class="item">
+      <img src="https://cdn.pixabay.com/photo/2019/12/10/10/53/architecture-4685608_960_720.jpg"
+        alt="Prdict House Price">
+      <div class="item-text">
+        <h1 class="name-res">{{'Prdict Price of Cali Housing' | translate}}</h1>
+        <p class="type-res">{{'Python, sklearn, joblib, numpy, pandas' | translate}}</p>
+        <div>
+        </div>
+      </div>
+      <div class="tabs">
+        <div style="display: inline;">
+          <button class="button-17" (click)="show(1)">Linear Regression</button>
+          <button class="button-17" (click)="show(2)">Decision Tree Regression</button>
+          <button class="button-17" (click)="show(3)">Random Forest Regression</button>
+          <button class="button-17" (click)="show(4)">Random Forest Regression Grid Search CV</button>
+          <button class="button-17" (click)="show(5)">Random Forest Regression Random Search CV</button>
+          <button class="button-17" translate="View code"></button>
+          <button class="button-17" (click)="showReview()" translate="Review Result Regression"></button>
+          <button class="button-17" (click)="showDataSets_fun()" translate="Dataset Information"></button>
+        </div>
+      </div>
+
+      <div class="line">
+      </div>
+
+      <div *ngIf="showData === true">
+        <h1 style="font-size: 30px;" *ngIf="TypePredict === 1">Linear Regression</h1>
+        <h1 style="font-size: 30px;" *ngIf="TypePredict === 2">Decision Tree Regression</h1>
+        <h1 style="font-size: 30px;" *ngIf="TypePredict === 3">Random Forest Regression</h1>
+        <h1 style="font-size: 30px;" *ngIf="TypePredict === 4">Random Forest Regression Grid Search CV</h1>
+        <h1 style="font-size: 30px;" *ngIf="TypePredict === 5">Random Forest Regression Random Search CV</h1>
+
+
+        <div class="tab-divide">
+          <div class="tab-view-sample-data">
+            <button (click)="showViewSample()">Sample Data</button>
+          </div>
+          <div class="tab-view-predict-data">
+            <button (click)="showViewPrdict()">Predict Data</button>
+          </div>
+        </div>
+
+        <div class="view-sample" *ngIf="viewSample === true">
+          <h3>Sample Predict Data</h3>
+          <div class="table-container">
+            <table *ngIf="dataModel">
+              <tr>
+                <th>Number</th>
+                <th>Longtitude</th>
+                <th>Latitude</th>
+                <th>Housing age</th>
+                <th>Total Room</th>
+                <th>Total Bedroom</th>
+                <th>Population</th>
+                <th>Household</th>
+                <th>Median income</th>
+                <th>Ocean Promxity</th>
+              </tr>
+              <tr *ngFor="let item of dataModel">
+                <td>{{item.Number}}</td>
+                <td>{{item.Longtitude}}</td>
+                <td>{{item.Latitude}}</td>
+                <td>{{item.Housing_age}}</td>
+                <td>{{item.TotalRoom}}</td>
+                <td>{{item.TotalBedroom}}</td>
+                <td>{{item.Population}}</td>
+                <td>{{item.Household}}</td>
+                <td>{{item.MedianIncome}}</td>
+                <td>{{item.OceanPromxity}}</td>
+              </tr>
+            </table>
+          </div>
+
+          <h3>Sample Prdict Value</h3>
+          <div class="table-container">
+            <table *ngIf="dataPredict">
+              <tr>
+                <th>Number</th>
+                <th>Reality Value</th>
+                <th>Predict Value</th>
+              </tr>
+
+              <tr *ngFor="let item of dataPredict">
+                <td>{{item.Number}}</td>
+                <td>{{item.Reality}}</td>
+                <td>{{item.Predict}}</td>
+              </tr>
+            </table>
+          </div>
+
+          <h3>Score Value</h3>
+          <div class="table-container">
+            <table *ngIf="data">
+              <tr>
+                <th translate="Root Mean Spuare Error of Train Set"></th>
+                <td>{{roundNumberto2(data.rmse_train)}}</td>
+              </tr>
+              <tr>
+                <th translate="Root Mean Spuare Error of Test Set"></th>
+                <td>{{roundNumberto2(data.rmse_test)}}</td>
+              </tr>
+              <tr>
+                <th translate="Root Mean Spuare Error of Cross Validation Mean"></th>
+                <td>{{roundNumberto2(data.mean)}}</td>
+              </tr>
+              <tr>
+                <th translate="Root Mean Spuare Error of Cross Validation Standard deviation"></th>
+                <td>{{roundNumberto2(data.std)}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="view-sample" *ngIf="viewPredict === true">
+          <div class="container">
+            <div class="body-item">
+              <h1 translate="Predict"></h1>
+
+              <form [formGroup]="predictForm" (ngSubmit)="submit()">
+
+                <div class="col-1">
+                  <label for="longitude">Longitude</label>
+                  <div class="text-input">
+                    <span class="fa-solid fa-location-dot"></span>
+                    <input type="text" id="longitude" formControlName="longitude"
+                      [placeholder]="'Longitude' | translate" value="-122.23">
+                  </div>
+
+                  <label for="longitude">Latitude</label>
+                  <div class="text-input">
+                    <span class="fa-solid fa-location-crosshairs"></span>
+                    <input type="number" id='' formControlName="latitude" class="form-control"
+                      [placeholder]="'Latitude' | translate" value="37.88" required>
+                  </div>
+
+                  <label for="housing_median_age">Housing Median Age</label>
+                  <div class="text-input">
+                    <span class="fa-solid fa-house-crack"></span>
+                    <input type="text" id="housing_median_age" formControlName="housing_median_age" class="form-control"
+                      [placeholder]="'Housing Median Age' | translate" value="41">
+                  </div>
+
+                  <label for="total_rooms">Total Rooms</label>
+                  <div class="text-input">
+                    <span class="fa-brands fa-buromobelexperte"></span>
+                    <input type="number" id="total_rooms" formControlName="total_rooms" class="form-control"
+                      [placeholder]="'Total Rooms' | translate" value="880">
+                  </div>
+                </div>
+
+                <div class="col-1">
+
+                  <label for="total_bedrooms">Total Bedrooms</label>
+                  <div class="text-input">
+                    <span class="fa-brands fa-intercom"></span>
+                    <input type="number" id="total_bedrooms" formControlName="total_bedrooms" class="form-control"
+                      [placeholder]="'Total Bedrooms' | translate" value="129">
+                  </div>
+
+                  <label for="population">Population</label>
+                  <div class="text-input">
+                    <span class="fa-solid fa-users"></span>
+                    <input type="number" id="population" formControlName="population" class="form-control"
+                      [placeholder]="'population' | translate" value="322">
+                  </div>
+
+                  <label for="households">Households</label>
+                  <div class="text-input">
+                    <span class="fa-solid fa-bath"></span>
+                    <input type="number" id="households" formControlName="households" class="form-control"
+                      [placeholder]="'Households' | translate" value="126">
+                  </div>
+
+                  <label for="median_income">Median Income</label>
+                  <div class="text-input">
+                    <span class="fa-solid fa-sack-dollar"></span>
+                    <input type="number" formControlName="median_income" class="form-control"
+                      [placeholder]="'Median Income' | translate" value="8.352">
+                  </div>
+
+                </div>
+
+                <div class="agree">
+                  <input type="radio" formControlName="ocean_proximity" id="value-1" value="NEAR BAY" checked>
+                  <label for="value-1" translate="NEAR BAY"></label>
+
+                  <input type="radio" formControlName="ocean_proximity" id="value-2" value="INLAND">
+                  <label for="value-2" translate="INLAND"></label>
+
+                  <input type="radio" formControlName="ocean_proximity" id="value-3" value="<1H OCEAN">
+                  <label for="value-3" translate="<1H OCEAN"></label>
+
+                  <input type="radio" formControlName="ocean_proximity" id="value-4" value="NEAR OCEAN">
+                  <label for="value-4" translate="NEAR OCEAN"></label>
+                </div>
+
+                <div class="text-input-b" style="margin-bottom: 30px;">
+                  <button class="button-33" type="submit" translate="Predict"></button>
+                </div>
+              </form>
+
+              <div *ngIf="Result" class="show-result">
+
+                <div class="img">
+                  <p>
+                    <i class="fa-solid fa-money-bill-wheat"></i>
+                  </p>
+                </div>
+
+                <div class="img">
+                  <span translate="Result predict" *ngIf="Result"></span>
+                  <span>{{roundNumberto2(Result)}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="showReviewPredict === true">
+        <div class="table-container">
+          <table>
+            <tr>
+              <th></th>
+              <th>Linear Regression</th>
+              <th>Decision Tree Regression</th>
+              <th>Random Forest Regression</th>
+              <th>Random Forest Regression - Grid Search CV</th>
+              <th>Random Forest Regression - Random Search CV</th>
+            </tr>
+            <tr>
+              <td style="font-weight: 700;">RMSE - Train Set</td>
+              <td>68628.2</td>
+              <td>0</td>
+              <td>18788.21</td>
+              <td>19314.96</td>
+              <td>18045.35</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700;">RMSE - Cross-Validation - Mean</td>
+              <td>69049.70</td>
+              <td>71180.83</td>
+              <td>50309.13</td>
+              <td>49613.51</td>
+              <td>48837.66</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700;">RMSE - Cross-Validation - Standard deviation</td>
+              <td>2736.48</td>
+              <td>3334.65</td>
+              <td>1976.83</td>
+              <td>1772.56</td>
+              <td>1884.50</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700;">RMSE - Test Set</td>
+              <td>66911.98</td>
+              <td>70875.27</td>
+              <td>48372.63</td>
+              <td>47856.64</td>
+              <td>46910.92</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700;">Review</td>
+              <td>Average</td>
+              <td>Bad</td>
+              <td>Good</td>
+              <td>Good</td>
+              <td>Good</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div *ngIf="showDataSets === true">
+        <h3 style="margin-bottom: 20px;">About Dataset</h3>
+        <p>It is a basic housing dataset to test out your regression models. You can try out different machine learning models on it. It has many useful features that gives you insight into the world of data.</p>
+
+        <h3 style="margin-bottom: 20px;margin-top: 20px;">Detail</h3>
+        <div class="table-container">
+          <table>
+            <tr>
+              <th>Longitude</th>
+              <th>Latitude</th>
+              <th>Housing Median Age</th>
+              <th>Total Bedrooms</th>
+              <th>Total Rooms</th>
+              <th>Population</th>
+              <th>Households</th>
+              <th>Median Income</th>
+              <th>Median House Value</th>
+              <th>Ocean Proximity</th>
+            </tr>
+            <tr>
+              <td>A measure of how far west a house is; a higher value is farther west</td>
+              <td>A measure of how far north a house is; a higher value is farther north</td>
+              <td>Median age of a house within a block; a lower number is a newer building</td>
+              <td>Total number of bedrooms within a block</td>
+              <td>Total number of rooms within a block</td>
+              <td>Total number of people residing within a block</td>
+              <td>Total number of households, a group of people residing within a home unit, for a block</td>
+              <td>Median income for households within a block of houses (measured in tens of thousands of US Dollars)</td>
+              <td>Median house value for households within a block (measured in US Dollars)</td>
+              <td>The house has a Ocean view or not.</td>
+            </tr>
+          </table>
+        </div>
+
+        <h3 style="margin-bottom: 20px;margin-top: 20px;">Number of Sample : {{dataset.Dataset.length}}</h3>
+        <div class="table-container">
+          <table *ngIf="dataset">
+            <tr>
+              <th>Longitude</th>
+              <th>Latitude</th>
+              <th>Housing Median Age</th>
+              <th>Total Bedrooms</th>
+              <th>Total Rooms</th>
+              <th>Population</th>
+              <th>Households</th>
+              <th>Median Income</th>
+              <th>Median House Value</th>
+              <th>Ocean Proximity</th>
+            </tr>
+            <tr *ngFor="let item of dataset.Dataset">
+              <td>{{item[0]}}</td>
+              <td>{{item[1]}}</td>
+              <td>{{item[2]}}</td>
+              <td>{{item[3]}}</td>
+              <td>{{item[4]}}</td>
+              <td>{{item[5]}}</td>
+              <td>{{item[6]}}</td>
+              <td>{{item[7]}}</td>
+              <td>{{item[8]}}</td>
+              <td>{{item[9]}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
